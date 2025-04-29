@@ -4,97 +4,409 @@
   <meta charset="UTF-8">
   <title>شبام للتسويق</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5f5f5;
+    }
+
+    /* أنماط صفحة تسجيل الدخول */
+    .login-page {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: all 0.5s ease;
+    }
+
+    .login-container {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1e3c72;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: right;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+
+    .input-group input:focus {
+      border-color: #1e3c72;
+      box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.2);
+      outline: none;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .remember-me input {
+      margin-left: 8px;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background-color: #1e3c72;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .login-btn:hover {
+      background-color: #2a5298;
+      transform: translateY(-2px);
+    }
+
+    .switch-form {
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .switch-form a {
+      color: #1e3c72;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .switch-form a:hover {
+      text-decoration: underline;
+    }
+
+    /* أنماط التطبيق الرئيسي */
+    .app-container {
+      display: none;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #1e3c72;
+      color: white;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      padding-top: 20px;
+      transition: all 0.3s;
+    }
+
+    .sidebar-header {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-menu {
+      padding: 20px 0;
+    }
+
+    .sidebar-menu a {
+      display: block;
+      padding: 12px 20px;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .sidebar-menu a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding-right: 25px;
+    }
+
+    .main-content {
+      margin-right: 250px;
+      padding: 20px;
+    }
+
+    .header {
+      background-color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .welcome-msg {
+      font-size: 18px;
+      color: #333;
+    }
+
+    .logout-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      float: left;
+    }
+
+    /* أنماط صفحة التسجيل */
+    .register-page {
+      display: none;
+    }
+
+    .register-container {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      flex: 1;
+      text-align: right;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- صفحة تسجيل الدخول -->
-  <div id="loginPage" class="login-page">
-    <div class="login-container">
-      <div class="logo">شبام للتسويق</div>
-      <form id="loginForm">
-        <div class="input-group">
-          <label for="loginPhone">رقم الجوال</label>
-          <input type="tel" id="loginPhone" required>
-        </div>
-        <div class="input-group">
-          <label for="loginPassword">كلمة المرور</label>
-          <input type="password" id="loginPassword" required>
-        </div>
-        <div class="remember-me">
-          <label for="rememberMe">تذكر تسجيل الدخول</label>
-          <input type="checkbox" id="rememberMe">
-        </div>
-        <button type="submit" class="login-btn">تسجيل الدخول</button>
-      </form>
-      <div class="switch-form">
-        ليس لديك حساب؟ <a href="#" onclick="showRegister()">إنشاء حساب جديد</a>
+<!-- صفحة تسجيل الدخول -->
+<div id="loginPage" class="login-page">
+  <div class="login-container">
+    <div class="logo">شبام للتسويق</div>
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="loginPhone">رقم الجوال</label>
+        <input type="tel" id="loginPhone" required>
       </div>
+      <div class="input-group">
+        <label for="loginPassword">كلمة المرور</label>
+        <input type="password" id="loginPassword" required>
+      </div>
+      <div class="remember-me">
+        <label for="rememberMe">تذكر تسجيل الدخول</label>
+        <input type="checkbox" id="rememberMe">
+      </div>
+      <button type="submit" class="login-btn">تسجيل الدخول</button>
+    </form>
+    <div class="switch-form">
+      ليس لديك حساب؟ <a href="#" onclick="showRegister()">إنشاء حساب جديد</a>
     </div>
   </div>
+</div>
 
-  <!-- صفحة التسجيل -->
-  <div id="registerPage" class="login-page" style="display: none;">
-    <div class="register-container">
-      <div class="logo">تسجيل حساب جديد</div>
-      <form id="registerForm">
-        <div class="form-row">
-          <div class="form-group input-group">
-            <label for="fullName">الاسم الكامل</label>
-            <input type="text" id="fullName" required>
-          </div>
-          <div class="form-group input-group">
-            <label for="registerPhone">رقم الجوال</label>
-            <input type="tel" id="registerPhone" required>
-          </div>
+<!-- صفحة التسجيل -->
+<div id="registerPage" class="login-page" style="display: none;">
+  <div class="register-container">
+    <div class="logo">تسجيل حساب جديد</div>
+    <form id="registerForm">
+      <div class="form-row">
+        <div class="form-group input-group">
+          <label for="fullName">الاسم الكامل</label>
+          <input type="text" id="fullName" required>
         </div>
-        <div class="form-row">
-          <div class="form-group input-group">
-            <label for="registerPassword">كلمة المرور</label>
-            <input type="password" id="registerPassword" required>
-          </div>
-          <div class="form-group input-group">
-            <label for="confirmPassword">تأكيد كلمة المرور</label>
-            <input type="password" id="confirmPassword" required>
-          </div>
+        <div class="form-group input-group">
+          <label for="registerPhone">رقم الجوال</label>
+          <input type="tel" id="registerPhone" required>
         </div>
-        <div class="input-group">
-          <label for="address">العنوان</label>
-          <input type="text" id="address" required>
-        </div>
-        <button type="submit" class="login-btn">تسجيل الحساب</button>
-      </form>
-      <div class="switch-form">
-        لديك حساب بالفعل؟ <a href="#" onclick="showLogin()">تسجيل الدخول</a>
       </div>
+      <div class="form-row">
+        <div class="form-group input-group">
+          <label for="registerPassword">كلمة المرور</label>
+          <input type="password" id="registerPassword" required>
+        </div>
+        <div class="form-group input-group">
+          <label for="confirmPassword">تأكيد كلمة المرور</label>
+          <input type="password" id="confirmPassword" required>
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="address">العنوان</label>
+        <input type="text" id="address" required>
+      </div>
+      <button type="submit" class="login-btn">تسجيل الحساب</button>
+    </form>
+    <div class="switch-form">
+      لديك حساب بالفعل؟ <a href="#" onclick="showLogin()">تسجيل الدخول</a>
     </div>
   </div>
+</div>
 
-  <!-- التطبيق الرئيسي -->
-  <div id="appContainer" class="app-container">
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <h2>شبام للتسويق</h2>
-      </div>
-      <div class="sidebar-menu">
-        <a href="#" class="active">الرئيسية</a>
-        <a href="#">المنتجات</a>
-        <a href="#">طلباتي</a>
-        <a href="#">حسابي</a>
-        <a href="#" onclick="logout()">تسجيل الخروج</a>
-      </div>
+<!-- التطبيق الرئيسي -->
+<div id="appContainer" class="app-container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>شبام للتسويق</h2>
     </div>
-    <div class="main-content">
-      <div class="header">
-        <span class="welcome-msg">مرحباً بك، <span id="userName"></span></span>
-        <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
-        <div style="clear: both;"></div>
-      </div>
-      <h1>مرحباً بك في نظام شبام للتسويق</h1>
-      <p>هذا هو المحتوى الرئيسي للتطبيق بعد تسجيل الدخول.</p>
+    <div class="sidebar-menu">
+      <a href="#" class="active">الرئيسية</a>
+      <a href="#">المنتجات</a>
+      <a href="#">طلباتي</a>
+      <a href="#">حسابي</a>
+      <a href="#" onclick="logout()">تسجيل الخروج</a>
     </div>
   </div>
+  <div class="main-content">
+    <div class="header">
+      <span class="welcome-msg">مرحباً بك، <span id="userName"></span></span>
+      <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+      <div style="clear: both;"></div>
+    </div>
+    <!-- محتوى التطبيق هنا -->
+    <h1>مرحباً بك في نظام شبام للتسويق</h1>
+    <p>هذا هو المحتوى الرئيسي للتطبيق بعد تسجيل الدخول.</p>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<script>
+  // عند تحميل الصفحة، تحقق من حالة تسجيل الدخول
+  document.addEventListener('DOMContentLoaded', function() {
+    // تحقق مما إذا كان المستخدم مسجل الدخول بالفعل
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const rememberMe = localStorage.getItem('rememberMe') === 'true';
+    
+    if (isLoggedIn && rememberMe) {
+      // إذا كان مسجل الدخول ومفعل تذكرني، انتقل مباشرة للتطبيق
+      showApp();
+    } else {
+      // إذا لم يكن مسجل الدخول، اعرض صفحة تسجيل الدخول
+      showLogin();
+    }
+  });
+
+  // عرض صفحة تسجيل الدخول
+  function showLogin() {
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('registerPage').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'none';
+  }
+
+  // عرض صفحة التسجيل
+  function showRegister() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('registerPage').style.display = 'flex';
+    document.getElementById('appContainer').style.display = 'none';
+  }
+
+  // عرض التطبيق الرئيسي
+  function showApp() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('registerPage').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'block';
+    
+    // عرض اسم المستخدم إذا كان موجوداً
+    const userData = JSON.parse(localStorage.getItem('userData') || {});
+    if (userData.fullName) {
+      document.getElementById('userName').textContent = userData.fullName;
+    }
+  }
+
+  // تسجيل الدخول
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const phone = document.getElementById('loginPhone').value;
+    const password = document.getElementById('loginPassword').value;
+    const rememberMe = document.getElementById('rememberMe').checked;
+    
+    // هنا يمكنك إضافة التحقق من صحة البيانات مع الخادم
+    
+    // تخزين حالة تسجيل الدخول
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('rememberMe', rememberMe);
+    
+    // عرض التطبيق الرئيسي
+    showApp();
+  });
+
+  // تسجيل حساب جديد
+  document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const fullName = document.getElementById('fullName').value;
+    const phone = document.getElementById('registerPhone').value;
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const address = document.getElementById('address').value;
+    
+    // التحقق من تطابق كلمة المرور
+    if (password !== confirmPassword) {
+      alert('كلمة المرور وتأكيدها غير متطابقين');
+      return;
+    }
+    
+    // تخزين بيانات المستخدم
+    const userData = {
+      fullName: fullName,
+      phone: phone,
+      address: address
+    };
+    
+    localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('rememberMe', 'true');
+    
+    // عرض التطبيق الرئيسي
+    showApp();
+  });
+
+  // تسجيل الخروج
+  function logout() {
+    // احتفظ ببيانات المستخدم ولكن أزل حالة تسجيل الدخول
+    localStorage.removeItem('isLoggedIn');
+    
+    // إذا لم يكن "تذكرني" مفعل، أزل بيانات المستخدم
+    if (localStorage.getItem('rememberMe') !== 'true') {
+      localStorage.removeItem('userData');
+    }
+    
+    // العودة إلى صفحة تسجيل الدخول
+    showLogin();
+  }
+</script>
+
 </body>
 </html>

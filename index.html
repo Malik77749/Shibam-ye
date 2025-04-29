@@ -7,87 +7,94 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="loginPage" class="login-page">
-  <div class="login-container">
-    <div class="logo">شبام للتسويق</div>
-    <form id="loginForm">
-      <div class="input-group">
-        <label for="loginPhone">رقم الجوال</label>
-        <input type="tel" id="loginPhone" required>
+
+  <!-- صفحة تسجيل الدخول -->
+  <div id="loginPage" class="login-page">
+    <div class="login-container">
+      <div class="logo">شبام للتسويق</div>
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="loginPhone">رقم الجوال</label>
+          <input type="tel" id="loginPhone" required>
+        </div>
+        <div class="input-group">
+          <label for="loginPassword">كلمة المرور</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <div class="remember-me">
+          <label for="rememberMe">تذكر تسجيل الدخول</label>
+          <input type="checkbox" id="rememberMe">
+        </div>
+        <button type="submit" class="login-btn">تسجيل الدخول</button>
+      </form>
+      <div class="switch-form">
+        ليس لديك حساب؟ <a href="#" onclick="showRegister()">إنشاء حساب جديد</a>
       </div>
-      <div class="input-group">
-        <label for="loginPassword">كلمة المرور</label>
-        <input type="password" id="loginPassword" required>
-      </div>
-      <div class="remember-me">
-        <label for="rememberMe">تذكر تسجيل الدخول</label>
-        <input type="checkbox" id="rememberMe">
-      </div>
-      <button type="submit" class="login-btn">تسجيل الدخول</button>
-    </form>
-    <div class="switch-form">
-      ليس لديك حساب؟ <a href="#" onclick="showRegister()">إنشاء حساب جديد</a>
     </div>
   </div>
-</div>
-<div id="registerPage" class="login-page" style="display: none;">
-  <div class="register-container">
-    <div class="logo">تسجيل حساب جديد</div>
-    <form id="registerForm">
-      <div class="form-row">
-        <div class="form-group input-group">
-          <label for="fullName">الاسم الكامل</label>
-          <input type="text" id="fullName" required>
+
+  <!-- صفحة التسجيل -->
+  <div id="registerPage" class="login-page" style="display: none;">
+    <div class="register-container">
+      <div class="logo">تسجيل حساب جديد</div>
+      <form id="registerForm">
+        <div class="form-row">
+          <div class="form-group input-group">
+            <label for="fullName">الاسم الكامل</label>
+            <input type="text" id="fullName" required>
+          </div>
+          <div class="form-group input-group">
+            <label for="registerPhone">رقم الجوال</label>
+            <input type="tel" id="registerPhone" required>
+          </div>
         </div>
-        <div class="form-group input-group">
-          <label for="registerPhone">رقم الجوال</label>
-          <input type="tel" id="registerPhone" required>
+        <div class="form-row">
+          <div class="form-group input-group">
+            <label for="registerPassword">كلمة المرور</label>
+            <input type="password" id="registerPassword" required>
+          </div>
+          <div class="form-group input-group">
+            <label for="confirmPassword">تأكيد كلمة المرور</label>
+            <input type="password" id="confirmPassword" required>
+          </div>
         </div>
+        <div class="input-group">
+          <label for="address">العنوان</label>
+          <input type="text" id="address" required>
+        </div>
+        <button type="submit" class="login-btn">تسجيل الحساب</button>
+      </form>
+      <div class="switch-form">
+        لديك حساب بالفعل؟ <a href="#" onclick="showLogin()">تسجيل الدخول</a>
       </div>
-      <div class="form-row">
-        <div class="form-group input-group">
-          <label for="registerPassword">كلمة المرور</label>
-          <input type="password" id="registerPassword" required>
-        </div>
-        <div class="form-group input-group">
-          <label for="confirmPassword">تأكيد كلمة المرور</label>
-          <input type="password" id="confirmPassword" required>
-        </div>
-      </div>
-      <div class="input-group">
-        <label for="address">العنوان</label>
-        <input type="text" id="address" required>
-      </div>
-      <button type="submit" class="login-btn">تسجيل الحساب</button>
-    </form>
-    <div class="switch-form">
-      لديك حساب بالفعل؟ <a href="#" onclick="showLogin()">تسجيل الدخول</a>
     </div>
   </div>
-</div>
-<div id="appContainer" class="app-container">
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <h2>شبام للتسويق</h2>
+
+  <!-- التطبيق الرئيسي -->
+  <div id="appContainer" class="app-container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>شبام للتسويق</h2>
+      </div>
+      <div class="sidebar-menu">
+        <a href="#" class="active">الرئيسية</a>
+        <a href="#">المنتجات</a>
+        <a href="#">طلباتي</a>
+        <a href="#">حسابي</a>
+        <a href="#" onclick="logout()">تسجيل الخروج</a>
+      </div>
     </div>
-    <div class="sidebar-menu">
-      <a href="#" class="active">الرئيسية</a>
-      <a href="#">المنتجات</a>
-      <a href="#">طلباتي</a>
-      <a href="#">حسابي</a>
-      <a href="#" onclick="logout()">تسجيل الخروج</a>
+    <div class="main-content">
+      <div class="header">
+        <span class="welcome-msg">مرحباً بك، <span id="userName"></span></span>
+        <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+        <div style="clear: both;"></div>
+      </div>
+      <h1>مرحباً بك في نظام شبام للتسويق</h1>
+      <p>هذا هو المحتوى الرئيسي للتطبيق بعد تسجيل الدخول.</p>
     </div>
   </div>
-  <div class="main-content">
-    <div class="header">
-      <span class="welcome-msg">مرحباً بك، <span id="userName"></span></span>
-      <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
-      <div style="clear: both;"></div>
-    </div>
-    <h1>مرحباً بك في نظام شبام للتسويق</h1>
-    <p>هذا هو المحتوى الرئيسي للتطبيق بعد تسجيل الدخول.</p>
-  </div>
-</div>
-<script src="script.js"></script>
+
+  <script src="script.js"></script>
 </body>
 </html>

@@ -2,8 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>تسجيل الدخول - شبام للتسويق</title>
+  <title>تسجيل حساب جديد - شبام للتسويق</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <style>
     body {
       margin: 0;
@@ -16,16 +17,16 @@
       height: 100vh;
     }
 
-    .login-container {
+    .register-container {
       background-color: #1e1e1e;
       padding: 30px;
       border-radius: 15px;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
       width: 90%;
-      max-width: 400px;
+      max-width: 450px;
     }
 
-    .login-container h2 {
+    .register-container h2 {
       text-align: center;
       margin-bottom: 25px;
       color: #ffd700;
@@ -43,17 +44,23 @@
       font-size: 16px;
     }
 
-    .remember {
+    .location-group {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-top: 10px;
     }
 
-    .remember input {
-      margin-left: 8px;
+    .location-group button {
+      background-color: #ffd700;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
     }
 
-    .login-btn {
+    .register-btn {
       width: 100%;
       background-color: black;
       color: white;
@@ -62,10 +69,12 @@
       border-radius: 10px;
       font-size: 18px;
       cursor: pointer;
+      margin-top: 20px;
       transition: 0.3s;
+      box-shadow: 0 4px 0 #222;
     }
 
-    .login-btn:hover {
+    .register-btn:hover {
       background-color: #333;
     }
 
@@ -78,7 +87,6 @@
     .bottom-links a {
       color: #ffd700;
       text-decoration: none;
-      margin: 0 5px;
     }
 
     .bottom-links a:hover {
@@ -88,51 +96,84 @@
 </head>
 <body>
 
-<div class="login-container">
-  <h2>شبام للتسويق</h2>
-  <form id="loginForm">
+<div class="register-container">
+  <h2>تسجيل حساب جديد</h2>
+  <form id="registerForm">
     <div class="input-group">
-      <input type="tel" id="phone" placeholder="رقم الجوال" required>
+      <input type="text" id="fullName" placeholder="مثال: أحمد سعيد" required>
     </div>
     <div class="input-group">
       <input type="password" id="password" placeholder="كلمة المرور" required>
     </div>
-
-    <div class="remember">
-      <input type="checkbox" id="rememberMe">
-      <label for="rememberMe">تذكرني</label>
+    <div class="input-group">
+      <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required>
+    </div>
+    <div class="input-group">
+      <input type="tel" id="phone" placeholder="رقم الجوال (مثال: +967XXXXXXXXX)" required>
+    </div>
+    <div class="input-group">
+      <input type="text" id="address" placeholder="العنوان الحالي" required>
     </div>
 
-    <button type="submit" class="login-btn">تسجيل الدخول</button>
+    <div class="location-group">
+      <span>تحديد الموقع الحالي:</span>
+      <button type="button" onclick="alert('ميزة تحديد الموقع قيد التطوير')">تحديد</button>
+    </div>
+
+    <button type="submit" class="register-btn">تسجيل الحساب</button>
 
     <div class="bottom-links">
-      <p>ليس لديك حساب؟ <a href="register.html">تسجيل حساب جديد</a></p>
-      <a href="#" onclick="showContact()">تواصل معنا</a>
+      <p>لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a></p>
     </div>
   </form>
 </div>
 
 <script>
-  document.getElementById('loginForm').addEventListener('submit', function(e) {
+  const supabaseUrl = 'https://mkvvxeuizmseoxoamhyb.supabase.co';
+  const supabaseKey = 'ضع_المفتاح_العام_هنا'; // استبدل هذا المفتاح بمفتاح anon من Supabase
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    
-    // هنا يمكنك إضافة التحقق من بيانات الدخول
+
+    const fullName = document.getElementById('fullName').value;
     const phone = document.getElementById('phone').value;
     const password = document.getElementById('password').value;
-    
-    // تخزين حالة تسجيل الدخول
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userPhone', phone);
-    
-    // الانتقال إلى الصفحة الرئيسية
-    window.location.href = 'index.html';
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const address = document.getElementById('address').value;
+
+    if(password !== confirmPassword) {
+      alert("كلمة المرور وتأكيدها غير متطابقين");
+      return;
+    }
+
+    // إنشاء الحساب في Supabase
+    const { data, error } = await supabase.auth.signUp({
+      phone,
+      password
+    });
+
+    if (error) {
+      alert("فشل في إنشاء الحساب: " + error.message);
+      return;
+    }
+
+    // حفظ بيانات المستخدم الإضافية في جدول profiles
+    const userId = data.user.id;
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert([{ id: userId, full_name: fullName, address: address, phone: phone }]);
+
+    if (profileError) {
+      alert("تم إنشاء الحساب، لكن فشل حفظ البيانات الإضافية: " + profileError.message);
+    } else {
+      alert("تم إنشاء الحساب بنجاح!");
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userPhone', phone);
+      window.location.href = 'index.html';
+    }
   });
 
-  function showContact() {
-    alert("للتواصل معنا: 777492635\nواتساب: 777492635");
-  }
-
-  // إذا كان المستخدم مسجل الدخول بالفعل، توجيهه مباشرة للصفحة الرئيسية
   if(localStorage.getItem('isLoggedIn') === 'true') {
     window.location.href = 'index.html';
   }

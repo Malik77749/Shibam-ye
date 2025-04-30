@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>تسجيل حساب جديد - شبام للتسويق</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <style>
     body {
       margin: 0;
@@ -109,7 +108,7 @@
       <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required>
     </div>
     <div class="input-group">
-      <input type="tel" id="phone" placeholder="رقم الجوال (مثال: +967XXXXXXXXX)" required>
+      <input type="tel" id="phone" placeholder="رقم الجوال" required>
     </div>
     <div class="input-group">
       <input type="text" id="address" placeholder="العنوان الحالي" required>
@@ -129,17 +128,13 @@
 </div>
 
 <script>
-  const supabaseUrl = 'https://mkvvxeuizmseoxoamhyb.supabase.co';
-  const supabaseKey = 'ضع_المفتاح_العام_هنا'; // استبدل هذا المفتاح بمفتاح anon من Supabase
-  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-  document.getElementById('registerForm').addEventListener('submit', async function(e) {
+  document.getElementById('registerForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
+    
     const fullName = document.getElementById('fullName').value;
-    const phone = document.getElementById('phone').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+    const phone = document.getElementById('phone').value;
     const address = document.getElementById('address').value;
 
     if(password !== confirmPassword) {
@@ -147,31 +142,19 @@
       return;
     }
 
-    // إنشاء الحساب في Supabase
-    const { data, error } = await supabase.auth.signUp({
+    const userData = {
+      fullName,
+      password,
       phone,
-      password
-    });
+      address
+    };
 
-    if (error) {
-      alert("فشل في إنشاء الحساب: " + error.message);
-      return;
-    }
+    // حفظ البيانات مؤقتًا في localStorage
+    localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('isLoggedIn', 'true');
 
-    // حفظ بيانات المستخدم الإضافية في جدول profiles
-    const userId = data.user.id;
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert([{ id: userId, full_name: fullName, address: address, phone: phone }]);
-
-    if (profileError) {
-      alert("تم إنشاء الحساب، لكن فشل حفظ البيانات الإضافية: " + profileError.message);
-    } else {
-      alert("تم إنشاء الحساب بنجاح!");
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('userPhone', phone);
-      window.location.href = 'index.html';
-    }
+    alert("تم التسجيل بنجاح!");
+    window.location.href = "index.html";
   });
 
   if(localStorage.getItem('isLoggedIn') === 'true') {
